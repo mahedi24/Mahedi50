@@ -1,60 +1,143 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mahedi Institute</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css" />
+  <meta charset="UTF-8">
+  <title>রিয়েলিস্টিক গাড়ি ও ছেলে</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #87ceeb 70%, #444 70%);
+      font-family: sans-serif;
+    }
+
+    .road {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .car {
+      width: 150px;
+      position: absolute;
+      bottom: 40px;
+      left: -200px;
+      animation: moveCar linear infinite;
+    }
+
+    .car img {
+      width: 100%;
+    }
+
+    .flame {
+      position: absolute;
+      bottom: 20px;
+      left: -20px;
+      width: 20px;
+      height: 20px;
+      background: orange;
+      border-radius: 50%;
+      animation: flame 0.4s infinite;
+    }
+
+    @keyframes flame {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    @keyframes moveCar {
+      from { left: -200px; }
+      to { left: 110%; }
+    }
+
+    .boy {
+      position: absolute;
+      bottom: 40px;
+      right: 100px;
+      width: 80px;
+      height: auto;
+      transition: right 1s;
+    }
+
+    .controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.9);
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .controls input, .controls button {
+      margin: 5px;
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Codevaly</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">হোম</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">কোর্সসমূহ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">যোগাযোগ</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <header class="bg-light text-center p-5">
-        <h1 class="display-4">প্রোগ্রামিং শেখা সহজ!</h1>
-        <p class="lead">Codevaly-এর মাধ্যমে শেখা শুরু করুন একদম বিনামূল্যে।</p>
-        <a href="#" class="btn btn-primary btn-lg">শেখা শুরু করুন</a>
-    </header>
+<div class="road">
+  <div class="car" id="car">
+    <div class="flame"></div>
+    <img id="carImage" src="https://i.imgur.com/fPp1YUH.png" alt="car">
+  </div>
+  <img class="boy" id="boy" src="https://i.imgur.com/4AiXzf8.png" alt="boy">
+</div>
 
-    <section class="container my-5">
-        <h2 class="mb-4">কোর্সসমূহ</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">HTML & CSS</h5>
-                        <p class="card-text">ওয়েব ডেভেলপমেন্টের প্রথম ধাপ।</p>
-                        <a href="#" class="btn btn-outline-primary">বিস্তারিত</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">JavaScript</h5>
-                        <p class="card-text">ইন্টার‍্যাকটিভ ওয়েবসাইট তৈরির হাতেখড়ি।</p>
-                        <a href="#" class="btn btn-outline-primary">বিস্তারিত</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="controls">
+  <label>Speed:</label>
+  <input type="range" id="speedSlider" min="2" max="10" value="5">
+  <br>
+  <label>Car Tint:</label>
+  <input type="color" id="tintColor" value="#ffffff">
+  <br>
+  <button onclick="playSound()">🔊 Play Engine</button>
+  <button onclick="runBoy()">🏃‍♂️ Run Boy</button>
+</div>
 
-    <footer class="bg-dark text-white text-center py-3">
-        &copy; 2025 Codevaly Clone. সর্বস্বত্ব সংরক্ষিত।
-    </footer>
+<audio id="carSound" src="https://www.soundjay.com/transportation/car-engine-start-1.mp3"></audio>
 
-    <script src="js/scripts.js"></script>
+<script>
+  const car = document.getElementById('car');
+  const speedSlider = document.getElementById('speedSlider');
+  const tintColor = document.getElementById('tintColor');
+  const carImage = document.getElementById('carImage');
+  const carSound = document.getElementById('carSound');
+  const boy = document.getElementById('boy');
+
+  function updateSpeed() {
+    const speed = speedSlider.value;
+    car.style.animationDuration = (12 - speed) + 's';
+  }
+
+  function updateTint() {
+    carImage.style.filter = `drop-shadow(0 0 10px ${tintColor.value})`;
+  }
+
+  function playSound() {
+    carSound.currentTime = 0;
+    carSound.play();
+  }
+
+  function runBoy() {
+    boy.style.right = '220px';
+    setTimeout(() => {
+      boy.style.right = '100px';
+    }, 2000);
+  }
+
+  car.addEventListener('click', () => {
+    playSound();
+    runBoy();
+  });
+
+  speedSlider.addEventListener('input', updateSpeed);
+  tintColor.addEventListener('input', updateTint);
+
+  updateSpeed();
+  updateTint();
+</script>
+
 </body>
 </html>
