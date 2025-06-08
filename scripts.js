@@ -1,1 +1,0 @@
-console.log('Codevaly clone loaded!');
